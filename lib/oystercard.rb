@@ -1,11 +1,11 @@
 class Oystercard
-  attr_reader :balance, :history, :journey
+  attr_reader :balance, :history, :journey 
 
   Balance_limit = 90
   Minimum_fair = 1
 
   def initialize
-    @balance = 0
+    @balance = 5
     @entry_station
     @history = {}
     @journey = []
@@ -21,15 +21,15 @@ class Oystercard
     @journey.any?
   end
 
-  def touch_in(station)
+  def touch_in(entry_station)
     raise "Insufficant funds" if @balance < Minimum_fair
-    @journey << station
+    @journey << entry_station
     station
   end
 
-  def touch_out(station)
+  def touch_out(exit_station)
     deduct(Minimum_fair)
-    @journey << station
+    @journey << exit_station
     write_history
     @journey.clear
   end
