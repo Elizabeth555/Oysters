@@ -26,6 +26,18 @@ describe Oystercard do
     expect(card.in_journey).to be false
   end
 
+  it "should have an empty journey history" do
+    expect(card.history).to be_empty
+  end
+
+  it "should store history of journeys" do
+    card.top_up(10)
+    card.touch_in(station)
+    card.touch_out(station)
+    expect(card.history).to include(:station => station)
+  end
+
+
   it "can touch in a card" do
     card.top_up(10)
     card.touch_in(station)
@@ -40,12 +52,12 @@ describe Oystercard do
   it "can touch out a card" do
     card.top_up(10)
     card.touch_in(station)
-    card.touch_out
+    card.touch_out(station)
     expect(card.in_journey).to be false
   end
   it "can deduct fair from balance at touch out" do
     card.top_up(10)
     card.touch_in(station)
-    expect{card.touch_out}.to change{card.balance}.by(-Oystercard::Minimum_fair)
+    expect{card.touch_out(station)}.to change{card.balance}.by(-Oystercard::Minimum_fair)
   end
 end
