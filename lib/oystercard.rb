@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :entry_station, :history, :journey
+  attr_reader :balance, :history, :journey
 
   Balance_limit = 90
   Minimum_fair = 1
