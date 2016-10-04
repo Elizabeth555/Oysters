@@ -1,12 +1,12 @@
 class Oystercard
-  attr_reader :balance, :in_journey, :history, :journey
+  attr_reader :balance, :entry_station, :history, :journey
 
   Balance_limit = 90
   Minimum_fair = 1
 
   def initialize
     @balance = 0
-    @in_journey = false
+    @entry_station
     @history = {}
     @journey = []
     @journeys = []
@@ -17,28 +17,29 @@ class Oystercard
     @balance += amount
   end
 
+  def in_journey?
+    @journey.any?
+  end
+
   def touch_in(station)
     raise "Insufficant funds" if @balance < Minimum_fair
-    @in_journey = true
     @journey << station
     station
   end
 
   def touch_out(station)
-    @in_journey = false
     deduct(Minimum_fair)
     @journey << station
-    @journeys << @journey.dup
-    station
-    @journey.clear
     write_history
+    @journey.clear
   end
 
+private
   def write_history
+    @journeys << @journey.dup
     @history = Hash[@journeys.map.with_index(1) {|x, i| [i,x]}]
   end
 
-  private
   def deduct(amount)
     @balance -= amount
   end

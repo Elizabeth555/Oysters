@@ -23,7 +23,7 @@ describe Oystercard do
    end
 
   it "can confirm that the card is not in journey" do
-    expect(card.in_journey).to be false
+    expect(card.in_journey?).to be false
   end
 
   it "should have an empty journey history" do
@@ -34,14 +34,14 @@ describe Oystercard do
     card.top_up(10)
     card.touch_in(station)
     card.touch_out(station)
-    expect(card.history).to include(:station => station)
+    expect(card.history).to include(1 => [station, station])
   end
 
 
   it "can touch in a card" do
     card.top_up(10)
     card.touch_in(station)
-    expect(card.in_journey).to be true
+    expect(card.in_journey?).to be true
   end
 
   it "will save entry station at touch in" do
@@ -53,7 +53,7 @@ describe Oystercard do
     card.top_up(10)
     card.touch_in(station)
     card.touch_out(station)
-    expect(card.in_journey).to be false
+    expect(card.in_journey?).to be false
   end
   it "can deduct fair from balance at touch out" do
     card.top_up(10)
