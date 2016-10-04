@@ -1,8 +1,10 @@
-require 'oystercard'
+require_relative 'oystercard'
 
 class Journey
    attr_reader :complete
+
    PENALTY_FAIR = 5
+
   def initialize(entry_station)
     @entry_station = entry_station
     @history = {}
@@ -10,22 +12,28 @@ class Journey
     @journeys = []
   end
 
-def start(entry_station)
+def start
+  penalty if @complete == false
   @journey.clear
-  @journey << entry_station
+  @journey << @entry_station
   @complete = false
-  entry_station
+  @entry_station
 end
 
 def end(exit_station)
   @journey << exit_station
   journey_log
-  @complete=true
+  @complete = true
   @journey
 end
 
-def penalty
-  deduct(PENALTY_FAIR)
+def fare
+  return PENALTY_FAIR if @complete == false
+  
+end
+
+def complete
+  @complete
 end
 
 def journey_log
