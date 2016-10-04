@@ -1,11 +1,12 @@
 require 'oystercard'
 
 describe Oystercard do
+
   subject(:card) { described_class.new }
   let(:station) {double :station}
 
   it 'should have a balance of 0' do
-    expect(card.balance).to eq (0r)
+    expect(card.balance).to eq (0)
   end
 
   it "should be able to add money" do
