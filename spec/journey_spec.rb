@@ -4,7 +4,6 @@ require 'oystercard'
 describe Journey do
 
   subject (:journey) {Journey.new("old street")}
-
   let (:exit_station) { double :exit_station }
 
   context "in journey tests" do
@@ -14,6 +13,13 @@ describe Journey do
       journey.start("old street")
       journey.end(exit_station)
       expect(journey.complete). to eq true
+    end
+
+    it "should deduct penalty fare if they fail to touch out" do
+      card = double("card", :balance => 10)
+      journey.start("old street")
+      journey.start("clapham")
+      expect{journey.penalty}.to change{card.balance}.by(-Journey::PENALTY_FAIR)
     end
 
   end

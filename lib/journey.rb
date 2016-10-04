@@ -1,5 +1,8 @@
+require 'oystercard'
+
 class Journey
    attr_reader :complete
+   PENALTY_FAIR = 5
   def initialize(entry_station)
     @entry_station = entry_station
     @history = {}
@@ -19,13 +22,14 @@ def end(exit_station)
   journey_log
   @complete=true
   @journey
+end
 
+def penalty
+  deduct(PENALTY_FAIR)
 end
 
 def journey_log
   @journeys << @journey.dup
   @history = Hash[@journeys.map.with_index(1) {|x, i| [i,x]}]
 end
-
-
 end
