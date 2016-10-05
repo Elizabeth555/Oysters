@@ -34,7 +34,18 @@ describe Journey do
     it "should return false if incomplete journey" do
       expect(journey).not_to be_complete
     end
-
+  end
+context "return fare" do
+  before do
+    journey.start_station(entry_station)
+  end
+  it "returns minimum fare" do
+    journey.finish_station(exit_station)
+    expect(journey.fare).to eq Journey::MINIMUM_FAIR
   end
 
+  it "returns penalty fare" do
+    expect(journey.fare).to eq Journey::PENALTY_FAIR
+  end
+end
   end
