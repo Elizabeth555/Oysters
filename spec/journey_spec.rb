@@ -3,42 +3,36 @@ require 'oystercard'
 
 describe Journey do
 
-  subject (:journey) {Journey.new("old street")}
+  subject (:journey) {Journey.new}
+  let (:entry_station) { double :entry_station }
   let (:exit_station) { double :exit_station }
 
   context "in journey tests" do
 
-
-    it "Should not be in journey once completed" do
-      journey.start("old street")
-      journey.end(exit_station)
-      expect(journey.complete). to eq true
-    end
-
-    it "should deduct penalty fare if they fail to touch out" do
-      card = double("card", :balance => 10)
-      journey.start("old street")
-      journey.start("clapham")
-      expect{journey.penalty}.to change{card.balance}.by(-Journey::PENALTY_FAIR)
-    end
-
-  end
-
-  context "storing journeys" do
-
-    it "should store entry station in journey" do
-      expect(journey.start("old street")).to eq("old street")
+    it "should store start station" do
+      journey.start_station(entry_station)
+      expect(journey.start).to eq entry_station
     end
 
     it "should store exit station" do
-      journey.start("old street")
-      expect(journey.end(exit_station)).to eq (["old street", exit_station])
+      journey.finish_station(exit_station)
+      expect(journey.finish).to eq exit_station
+    end
+  end
+
+  context "complete and incomplete journeys" do
+
+    before do
+      journey.start_station(entry_station)
     end
 
-    it "should store history of journeys" do
-      journey.start("old street")
-      journey.end("camden")
-      expect(journey.journey_log).to include(1 => ["old street", "camden"])
+    it "should return true if complete journey" do
+      journey.finish_station(exit_station)
+      expect(journey).to be_complete
+    end
+
+    it "should return false if incomplete journey" do
+      expect(journey).not_to be_complete
     end
 
   end

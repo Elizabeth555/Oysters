@@ -9,6 +9,8 @@ class Oystercard
 
   def initialize
     @balance = 0
+    @journey = Journey.new
+    @journeys = []
   end
 
   def top_up(amount)
@@ -18,13 +20,17 @@ class Oystercard
 
   def touch_in(entry_station)
     raise "Insufficant funds" if @balance < Minimum_fair
-    @journey = Journey.new(entry_station)
-    @journey.start
+    @journey.start(entry_station)
   end
 
   def touch_out(exit_station)
     deduct(Minimum_fair)
     @journey.end(exit_station)
+  end
+
+  def journey_log
+    @journeys << @journey.dup
+    @history = Hash[@journeys.map.with_index(1) {|x, i| [i,x]}]
   end
 
 private
