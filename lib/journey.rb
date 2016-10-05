@@ -1,7 +1,8 @@
 class Journey
-   attr_reader :start, :finish
+   attr_reader :start, :finish, :fare
 
    PENALTY_FAIR = 5
+   MINIMUM_FAIR = 1
 
   def start_station(station)
     @start = station
@@ -11,8 +12,10 @@ class Journey
     @finish = station
   end
 
+
   def fare
-     return PENALTY_FAIR if complete?
+     return PENALTY_FAIR if !complete?
+     MINIMUM_FAIR
   end
 
   def complete?

@@ -1,8 +1,8 @@
 require_relative 'journey'
 
 class Oystercard
-  attr_reader :history, :journey
-  attr_accessor :balance, :name
+  attr_reader :journey
+  attr_accessor :balance, :name, :log, :history
 
   Balance_limit = 90
   Minimum_fair = 1
@@ -10,7 +10,9 @@ class Oystercard
   def initialize
     @balance = 0
     @journey = Journey.new
-    @journeys = []
+    @history = []
+    @log = {}
+
   end
 
   def top_up(amount)
@@ -20,17 +22,19 @@ class Oystercard
 
   def touch_in(entry_station)
     raise "Insufficant funds" if @balance < Minimum_fair
-    @journey.start(entry_station)
+    @journey.start_station(entry_station)
   end
 
   def touch_out(exit_station)
-    deduct(Minimum_fair)
-    @journey.end(exit_station)
+    @journey.finish_station(exit_station)
+    deduct(journey.fare)
+    journey_log
+    @journey = Journey.new
   end
 
   def journey_log
-    @journeys << @journey.dup
-    @history = Hash[@journeys.map.with_index(1) {|x, i| [i,x]}]
+  @history << @journey.dup
+  @log = Hash[history.map.with_index(1){ |hash, key| [key,hash]} ]
   end
 
 private
