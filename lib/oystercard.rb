@@ -20,8 +20,13 @@ class Oystercard
     @balance += amount
   end
 
+  def in_journey?
+    @journey.start != nil
+  end
+
   def touch_in(entry_station)
     raise "Insufficant funds" if @balance < Minimum_fair
+    deduct(journey.fare) if @journey.start != nil
     @journey.start_station(entry_station)
   end
 

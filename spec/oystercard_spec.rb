@@ -35,9 +35,8 @@ describe Oystercard do
     card.top_up(10)
     card.touch_in(station)
     card.touch_out(station)
-    expect(card.history).to include(1 => [station, station])
+    expect(card.history).to include(Journey)
   end
-
 
   it "can touch in a card" do
     card.top_up(10)

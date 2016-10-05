@@ -1,5 +1,5 @@
 class Journey
-   attr_reader :start, :finish, :fare
+   attr_reader :start, :finish
 
    PENALTY_FAIR = 5
    MINIMUM_FAIR = 1
